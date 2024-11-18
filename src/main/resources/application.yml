@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: kafka
+  kafka:
+    group_id: group-user
+    availability:
+      retry_interval: 3000
+      retry_attempts: 3
+    producer:
+      bootstrap-servers: localhost:29092
+      batch_size: 163840
+      linger: 2000
+    topic-4: user-topic
+  data:
+    neo4j:
+      database: demo
+  neo4j:
+    uri: "neo4j://localhost:7687"
+    authentication:
+      username: neo4j
+      password: demo
+server:
+  port: 9000
+
+
