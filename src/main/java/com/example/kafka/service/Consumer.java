@@ -15,8 +15,22 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class Consumer {
+    // @Autowired is an annotation used to automatically inject dependencies into a class.
+    // It is part of Spring’s Dependency Injection (DI) mechanism,
+    // which allows objects to be provided with their required dependencies
+    // (other objects or services) automatically, rather than explicitly creating
+    // them within the class.
     @Autowired
     Neo4jTypeFactory neo4jTypeFactory;
+
+    // The @KafkaListener annotation is used to mark a method as a listener that will consume
+    // messages from a Kafka topic. The method will be triggered whenever a message is received.
+
+  //containerFactory = "userKafkaListenerContainerFactory"This defines the container factory to be used by the Kafka listener,
+  // which sets up how the messages should be deserialized.
+
+    //batch = "true": This indicates that the listener will process messages in batches,
+    // meaning it will consume multiple records in a single call.
     @KafkaListener(topics = "${spring.kafka.topic-4}", groupId = "${spring.kafka.group_id}", containerFactory = "userKafkaListenerContainerFactory",batch = "true")
     void listenerWithMessageConverter(ConsumerRecords<String, User> message) {
         log.info("Received Message : {}",message);

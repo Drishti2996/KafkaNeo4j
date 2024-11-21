@@ -19,6 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+
+// @EnableRetry:
+//
+//    This enables Spring's retry functionality in the application,
+//    allowing the method createTopic to be retried on failure according to the defined retry policy.
 @EnableRetry
 public class AdminTopic {
 
@@ -27,6 +32,9 @@ public class AdminTopic {
 
     @Retryable(retryFor = { TopicCreationFailedException.class },
             maxAttemptsExpression = "${spring.kafka.availability.retry_attempts}",
+            // backoff defines the backoff strategy between retries,
+            // where the delay is dynamically defined using a value from the application's
+            // configuration (spring.kafka.availability.retry_interval).
             backoff = @Backoff(delayExpression = "${spring.kafka.availability.retry_interval}"))
     public void createTopic(NewTopic userTopic) {
         try (var client = AdminClient.create(kafkaConfiguration.kafkaAdminProperties())) {
